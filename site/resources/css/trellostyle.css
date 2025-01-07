@@ -1,0 +1,358 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    height: 100%;
+    /*Image only BG fallback*/
+
+    /*background = gradient + image pattern combo*/
+    background: rgb(238, 174, 202);
+    background: -moz-radial-gradient(circle, rgba(238, 174, 202, 0.8814119397759104) 0%, rgba(148, 187, 233, 1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(238, 174, 202, 0.8814119397759104) 0%, rgba(148, 187, 233, 1) 100%);
+    background: radial-gradient(circle, rgba(238, 174, 202, 0.8814119397759104) 0%, rgba(148, 187, 233, 1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#eeaeca", endColorstr="#94bbe9", GradientType=1);
+}
+
+body {
+    /*  background-color: #f7f7f7;*/
+    margin: 0;
+    font-family: Roboto, sans-serif;
+    /*font-size: 14px;*/
+
+}
+
+.trello-main {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    height: 85vh;
+}
+
+aside {
+    width: 250px;
+    background-color: #F0F0F0;
+    padding: 15px 8px 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.utilisateur {
+    font-size: 1.5em;
+    font-weight: bold;
+    /*border-bottom: #f7f7f7 1px solid;*/
+    border-radius: 8px;
+    background-color: gray;
+    height: 50px;
+    padding: 0 5px 0 15px;
+}
+
+.tableau {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+
+img.icon {
+    width: 10px;
+    height: 10px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    display: block;
+    max-width: 100%;
+}
+
+.icons_menu {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.icons_menu_stick {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.actions {
+    margin-left: 8px;
+}
+
+
+article {
+    display: flex;
+    align-items: stretch;
+}
+
+.tableau {
+    flex-grow: 1;
+    border: #f0f0f0 2px solid;
+    border-radius: 8px;
+    padding: 12px;
+    background-color: lightgray;
+    display: flex;
+    flex-direction: column;
+    margin: 20px 10px;
+}
+
+> .titre {
+    font-size: 2em;
+    font-weight: bold;
+    /*border-bottom: #f7f7f7 1px solid;*/
+    border-radius: 8px;
+    background-color: #fbfafd;
+    height: 50px;
+    padding-left: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+> .corps {
+    width: 75vw;
+    overflow-x: scroll;
+    display: flex;
+    align-items: flex-start;
+    flex-grow: 1;
+    gap: 20px;
+    padding: 10px 20px;
+}
+
+.titre {
+    font-weight: bold;
+}
+
+.colonne::-webkit-scrollbar {
+    display: none;
+}
+
+.colonne {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    overflow-y: scroll;
+    max-height: 100%;
+    width: 300px;
+    flex-shrink: 0;
+    border: black 2px solid;
+    border-radius: 8px;
+    padding: 8px 8px 8px 8px;
+    margin: 18px 1px;
+}
+
+> .titre {
+    padding-left: 10px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+
+}
+
+
+> .corps {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1ex;
+}
+
+
+.ajout-tableau:visited, .ajout-tableau:link, .ajout-tableau:hover, .ajout-tableau:active {
+    text-decoration: none;
+    color: black;
+}
+
+
+.carte {
+    background-color: white;
+    padding: 8px;
+    /*border: solid 1px black;*/
+    box-shadow: 1px 1px 2px 0 #AAA;
+    border-radius: 8px;
+}
+
+> .titre {
+    border-bottom: 1px solid black;
+    height: 25px;
+}
+
+.actions {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+
+}
+
+
+> .corps {
+    font-size: 13px;
+    margin: 5px 0;
+}
+
+> .pied {
+    border-top: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 3px;
+    padding-top: 5px;
+}
+
+main span {
+    /*display: flex;*/
+    /*height:20px;*/
+    /*width: 20px;*/
+    /*align-items: center;*/
+    /*justify-content: center;*/
+    background-color: white;
+    color: black;
+    border-radius: 10px;
+    padding: 5px;
+    font-size: 10px;
+    margin: 2px 0;
+}
+
+
+main {
+    width: 90%;
+    margin-left: 5%;
+    min-height: 85vh;
+    display: flex;
+
+    /*justify-content: center;*/
+    flex-direction: column;
+
+}
+
+/* Style des formulaires */
+form {
+    width: 60%;
+    margin: 50px auto;
+    text-align: center;
+    position: relative;
+
+}
+
+form fieldset {
+    background: white;
+    border: 0 none;
+    border-radius: 6px;
+    box-shadow: 0 0 15px 2px rgba(0, 0, 0, 0.4);
+    padding: 20px 30px;
+    box-sizing: border-box;
+    width: 80%;
+    margin: 0 10%;
+
+    /*stacking fieldsets above each other*/
+    position: relative;
+}
+
+/*inputs*/
+form input, form textarea {
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    width: 100%;
+    box-sizing: border-box;
+
+    color: #31708f;
+    font-size: 16px;
+}
+
+form p {
+    display: flex;
+    flex-direction: column;
+}
+
+> label {
+    text-align: start;
+    margin-bottom: 3px;
+}
+
+
+form input:hover {
+    box-shadow: 0 0 0 2px white, 0 0 0 3px #27AE60;
+}
+
+/*headings*/
+form h3 {
+    text-transform: uppercase;
+    margin-bottom: 10px;
+}
+
+form .btn {
+    border: 1px dotted black;
+    padding: 6px;
+    border-radius: 4px;
+    margin-bottom: 6px;
+}
+
+> a {
+    text-decoration: none;
+    color: black;
+}
+
+
+form .btn:hover {
+    box-shadow: 0 0 0 2px white, 0 0 0 6px #27AE60;
+}
+
+form .btn_maj {
+    background-color: #31708f;
+    margin-top: 8px;
+}
+
+form .btn_suppr {
+    background-color: #a94442;
+}
+
+/* liste des tableau de l'utilisateur*/
+.tableaux {
+    display: flex;
+    flex-direction: column;
+
+    width: 100%;
+
+}
+
+> .ligne_tableau {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    border-collapse: collapse;
+}
+
+> div {
+    flex-basis: 33%
+}
+
+.popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    display: flex;
+}
+
+#popup-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}

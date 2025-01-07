@@ -1,0 +1,17 @@
+<div class="popup">
+    <form>
+        <fieldset>
+            <h3>Ajout d'un membre au tableau {{ tableau.titreTableau }} :</h3>
+            <p>
+                <label for="add_loginMembre">Login du membre&#42;</label> :
+                <input type="text" placeholder="lebretonr" name="loginMembre" id="add_loginMembre" minlength="1"
+                       maxlength="30"
+                       required>
+            </p>
+            <input type='hidden' id='addMember_idTableau' value='{{ tableau.idTableau }}'>
+            <p>
+                <input type="button" id="add_submitButton" value="Ajouter">
+            </p>
+        </fieldset>
+    </form>
+</div>

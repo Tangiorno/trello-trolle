@@ -1,0 +1,47 @@
+<div class="popup">
+    <form>
+        <fieldset>
+            <h3>Création d'une carte :</h3>
+            <p>
+                <label for="add_titreCarte">Titre de la carte&#42;</label> :
+                <input type="text" placeholder="Ma super tâche" name="titreCarte"
+                       id="add_titreCarte" minlength="1"
+                       maxlength="50" required>
+            </p>
+            <p>
+                <label for="add_descriptifCarte">Description de la carte&#42;</label> :
+            <div>
+                <textarea placeholder="Description de la tâche..."
+                          name="descriptifCarte" id="add_descriptifCarte"
+                          required></textarea>
+            </div>
+            <p>
+                <label for="add_couleurCarte">Couleur de la carte&#42;</label> :
+                <input type="color" value="#FFFFFF" name="couleurCarte"
+                       id="add_couleurCarte" required>
+            </p>
+            <p>
+                <label for="add_affectationsCarte">Membres affectés :</label>
+            <div>
+                <select multiple name="affectationsCarte[]" id="add_affectationsCarte">
+                    <option value="{{ colonne.tableau.proprietaire.login }}" data-membretostring="{{ colonne.tableau.proprietaire.prenom }} {{ colonne.tableau.proprietaire.nom }}">
+                        {{ colonne.tableau.proprietaire.prenom }}
+                        {{ colonne.tableau.proprietaire.nom }}
+                        {{ colonne.tableau.proprietaire.login }}
+                    </option>
+                    {% for membre in colonne.tableau.participants %}
+                        <option value="{{ membre.login }}" data-membretostring="{{ membre.prenom }} {{ membre.nom }}">
+                            {{ membre.prenom }}
+                            {{ membre.nom }}
+                            {{ membre.login }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <input type="hidden" id="add_idColonne" name="idColonne" value="{{ colonne.idColonne }}">
+            <p>
+                <input type="button" id="add_submitButton" value="Créer la carte">
+            </p>
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,30 @@
+{% extends "generale.html.twig" %}
+
+{% block page_title %}Détail de l'utilisateur{% endblock %}
+
+{% block page_content %}
+
+    <p>
+
+    <form>
+        <h3>Détail du compte {{ utilisateur.login }}</h3>
+        <p>
+
+            <label for="">Nom</label>
+            <input type="text" disabled value="{{ utilisateur.nom }}">
+            <label for="">Prénom</label>
+            <input type="text" disabled value="{{ utilisateur.prenom }}">
+        </p>
+
+        {% if connexionUtilisateur.loginUtilisateurConnecte and loginUtilisateurConnecte == utilisateur.login %}
+            <div class="btn btn_maj"><a href="{{ route("afficherFormulaireMiseAJour", {'login': utilisateur.login}) }}">Mettre
+                    à jour le compte</a></div>
+            <div class="btn btn_suppr"><a href="{{ route("supprimer", {'login': utilisateur.login}) }}">Supprimer le
+                    compte</a></div>
+        {% endif %}
+
+    </form>
+
+    </p>
+
+{% endblock %}

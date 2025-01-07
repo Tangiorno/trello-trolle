@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <title>{% block page_title %}{% endblock %}</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{{ asset("../resources/css/navstyle.css") }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset("../resources/css/trellostyle.css") }}">
+    {% block scriptJS %}{% endblock %}
+</head>
+<body>
+<script type="text/javascript">
+    let siteBase = "{{ asset('.') }}";
+    let apiBase = siteBase + "/api/"
+    let pagePersoBase = siteBase + "/tableaux/liste/";
+    let imgBase = "{{ asset("../resources/img") }}";
+</script>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a href="{{ route("accueil") }}">Accueil</a>
+            </li>
+            {% if not connexionUtilisateur.loginUtilisateurConnecte %}
+                <li>
+                    <a href="{{ route("afficherFormulaireConnexion") }}">
+                        Connexion <img alt="login" src="{{ asset("../resources/img/enter.png") }}">
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route("afficherFormulaireCreation") }}">
+                        Inscription <img alt="S'inscrire" title="S'inscrire"
+                                         src="{{ asset("../resources/img/add-user.png") }}">
+                    </a>
+                </li>
+            {% else %}
+                <li>
+                    <a href="{{ route("afficherListeMesTableaux") }}">Mes tableaux</a>
+                </li>
+                <li>
+                    <a href="{{ route("afficherDetail", {'login': loginUtilisateurConnecte}) }}">
+                        Mon compte (<span>{{ loginUtilisateurConnecte }}</span>) <img alt="logout"
+                                                                                      src="{{ asset("../resources/img/user.png") }}">
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route("deconnecter") }}">
+                        Déconnexion <img alt="logout" src="{{ asset("../resources/img/logout.png") }}">
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+    <div>
+        {% for type, messagesFlashPourUnType in messagesFlash %}
+            {# type est l'une des valeurs suivantes : "success", "info", "warning", "danger"
+             , messagesFlashPourUnType est la liste des messages flash d'un type  #}
+            {% for messageFlash in messagesFlashPourUnType %}
+                <div class="alert alert-type">
+                    {{ messageFlash }}
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</header>
+<main>
+    {% block page_content %}{% endblock %}
+</main>
+
+<footer>
+    <p>
+        Copyright Penguins Company
+    </p>
+</footer>
+</body>
+</html>

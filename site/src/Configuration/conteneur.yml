@@ -1,0 +1,107 @@
+services:
+
+  configuration_base_de_donnees:
+    class: App\Trellotrolle\Configuration\ConfigurationDB
+
+  connexion_base_de_donnees:
+    class: App\Trellotrolle\Modele\Repository\ConnexionBaseDeDonnees
+    arguments: [ '@configuration_base_de_donnees' ]
+
+  connexion_utilisateur_session:
+    class: App\Trellotrolle\Lib\ConnexionUtilisateurSession
+
+  connexion_utilisateur_jwt:
+    class: App\Trellotrolle\Lib\ConnexionUtilisateurJWT
+
+  #Controleurs
+
+  controleur_generique:
+    class: App\Trellotrolle\Controleur\ControleurGenerique
+    arguments: [ '@container' ]
+  
+  controleur_tableau:
+    class: App\Trellotrolle\Controleur\ControleurTableau
+    arguments: [ '@container', '@carte_service', '@colonne_service', '@tableau_service', '@utilisateur_service', '@connexion_utilisateur_session' ]
+
+  controleur_utilisateur:
+    class: App\Trellotrolle\Controleur\ControleurUtilisateur
+    arguments: [ '@container', '@carte_service', '@tableau_service', '@utilisateur_service', '@connexion_utilisateur_session', '@connexion_utilisateur_jwt' ]
+
+  controleur_carte_api:
+    class: App\Trellotrolle\Controleur\API\ControleurCarteAPI
+    arguments: [ '@container', '@carte_service', '@colonne_service', '@tableau_service', '@utilisateur_service', '@connexion_utilisateur_jwt' ]
+
+  controleur_colonne_api:
+    class: App\Trellotrolle\Controleur\API\ControleurColonneAPI
+    arguments: [ '@container', '@colonne_service', '@tableau_service', '@connexion_utilisateur_jwt' ]
+
+  controleur_membre_api:
+    class: App\Trellotrolle\Controleur\API\ControleurMembreAPI
+    arguments: [ '@container', '@tableau_service', '@carte_service', '@utilisateur_service', '@connexion_utilisateur_jwt' ]
+
+  controleur_utilisateur_api:
+    class: App\Trellotrolle\Controleur\ControleurUtilisateurAPI
+    arguments: [ '@container', '@utilisateur_service', '@connexion_utilisateur_jwt' ]
+
+  #Services
+  
+  carte_service:
+    class: App\Trellotrolle\Service\ServiceCarte
+    arguments: [ '@carte_repository', '@colonne_repository', '@utilisateur_repository', '@connexion_utilisateur_session' ]
+
+  colonne_service:
+    class: App\Trellotrolle\Service\ServiceColonne
+    arguments: [ '@colonne_repository', '@carte_repository', '@tableau_repository', '@connexion_utilisateur_session' ]
+
+  tableau_service:
+    class: App\Trellotrolle\Service\ServiceTableau
+    arguments: [ '@carte_repository', '@colonne_repository', '@tableau_repository', '@utilisateur_repository', '@connexion_utilisateur_session', '@colonne_service' ]
+
+  utilisateur_service:
+    class: App\Trellotrolle\Service\ServiceUtilisateur
+    arguments: [ '@utilisateur_repository', '@connexion_utilisateur_session' ]
+
+  request_stack:
+    class: Symfony\Component\HttpFoundation\RequestStack
+
+  #Repositories
+
+  abstract_repository:
+    class: App\Trellotrolle\Modele\Repository\AbstractRepository
+    arguments: [ '@connexion_base_de_donnees' ]
+
+  carte_repository:
+    class: App\Trellotrolle\Modele\Repository\CarteRepository
+    arguments: [ '@connexion_base_de_donnees', '@colonne_repository', '@utilisateur_repository' ]
+
+  colonne_repository:
+    class: App\Trellotrolle\Modele\Repository\ColonneRepository
+    arguments: [ '@connexion_base_de_donnees', '@tableau_repository' ]
+
+  tableau_repository:
+    class: App\Trellotrolle\Modele\Repository\TableauRepository
+    arguments: [ '@connexion_base_de_donnees', '@utilisateur_repository' ]
+
+  utilisateur_repository:
+    class: App\Trellotrolle\Modele\Repository\UtilisateurRepository
+    arguments: [ '@connexion_base_de_donnees' ]
+
+  #Twig
+  twig_loader:
+    class: Twig\Loader\FilesystemLoader
+    arguments: [ '%project_root%/src/vue/' ]
+  twig:
+    class: Twig\Environment
+    arguments:
+      $loader: '@twig_loader'
+      $options:
+        autoescape: 'html'
+        strict_variables: true
+
+  url_generator:
+    class: Symfony\Component\Routing\Generator\UrlGenerator
+    arguments: [ '@routes', '@request_context' ]
+
+  url_helper:
+    class: Symfony\Component\HttpFoundation\UrlHelper
+    arguments: [ '@request_stack', '@request_context' ]

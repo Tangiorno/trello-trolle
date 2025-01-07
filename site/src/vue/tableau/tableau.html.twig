@@ -1,0 +1,168 @@
+{% extends "generale.html.twig" %}
+
+{% block page_title %}{{ tableau.titreTableau }}{% endblock %}
+
+{% block scriptJS %}
+    <script type="module" src="{{ asset("../resources/js/popups.js") }}" defer></script>
+    <script type="module" src="{{ asset("../resources/js/lib/utility.js") }}"></script>
+    <script type="module" src="{{ asset("../resources/js/api/colonne.js") }}" defer></script>
+    <script type="module" src="{{ asset("../resources/js/api/membre.js") }}"></script>
+    <script type="module" src="{{ asset("../resources/js/lib/dragndrop.js") }}" defer></script>
+    <script type="module" src="{{ asset("../resources/js/lib/reactive.js") }}"></script>
+    <script type="module" src="{{ asset("../resources/js/api/carte.js") }}"></script>
+{% endblock %}
+
+{% block page_content %}
+    <div class="trello-main">
+        <aside>
+            <div class="utilisateur icons_menu">
+                <span>{{ tableau.proprietaire.prenom }} {{ tableau.proprietaire.nom }}</span>
+
+                {% if estConnecte and tableau.proprietaire.login == loginUtilisateurConnecte %}
+                    <span><a href="{{ route("afficherFormulaireMiseAJour", {'login': tableau.proprietaire.login}) }}"><img
+                                    class="icon" src="{{ asset("../resources/img/editer.png") }}"
+                                    alt="Modifier l'utilisateur"></a></span>
+                {% endif %}
+            </div>
+            <div class="tableau">
+                <div class="icons_menu">
+                    <span>{{ tableau.titreTableau }}</span>
+                </div>
+                <div class="participants">
+                    Membres :
+                    <ul>
+                        <li>{{ tableau.proprietaire.prenom }} {{ tableau.proprietaire.nom }}</li>
+                        {% for participant in tableau.participants %}
+                            <div class="membres">
+                                <li>
+                                    <div class="icons_menu_stick">
+                                        {{ participant.prenom }} {{ participant.nom }}
+                                        {% if estConnecte and tableau.proprietaire.login == loginUtilisateurConnecte %}
+                                            <span class="actions">
+                                            <button class="delete-membre" data-id-membre="{{ participant.login }}"
+                                                    data-id-tableau="{{ tableau.codeTableau }}"><img
+                                                        class="icon" src="{{ asset("../resources/img/x.png") }}"
+                                                        alt="Retirer le membre"></button>
+                                </span>
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            </div>
+                        {% endfor %}
+                        {% if estConnecte and tableau.proprietaire.login == loginUtilisateurConnecte %}
+
+                            <button id="buttonPopupAjoutMembre" data-idTableau="{{ tableau.idTableau }}">Ajouter
+                                un membre
+                            </button>
+                            {% include 'tableau/formulaireAjoutMembreTableau.html.twig' %}
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </aside>
+        <article>
+            <div class="tableau">
+                <div class="titre icons_menu">
+                    {{ tableau.titreTableau }}
+                    {% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                        <span class="actions">
+                    <a href="{{ route("afficherFormulaireMiseAJourTableau", {'codeTableau': tableau.codeTableau}) }}"><img
+                                class="icon" src="{{ asset("../resources/img/editer.png") }}"
+                                alt="Éditer le tableau"></a>
+                    </span>
+                    {% endif %}
+                </div>
+                <div class="corps">
+                    {% for colonne in colonnes %}
+                        <script type="module">
+                            import {creerColonneReactive} from '{{ asset("../resources/js/api/colonne.js") }}'
+
+                            creerColonneReactive({{ colonne.idColonne }}, '{{ colonne.titreColonne }}')
+                        </script>
+                        <div class="colonne" id="colonne-{{ colonne.idColonne }}"
+                                {% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                                    data-droppable="true"
+                                {% else %}
+                                    data-droppable="false"
+                                {% endif %}
+                        >
+                            <div class="titre icons_menu">
+                                <span data-textvar="colonne-{{ colonne.idColonne }}.titre"></span>
+
+                                {% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                                    <span class="actions">
+                                        <button class="buttonPopupModifColonne"
+                                                data-idcolonne="{{ colonne.idColonne }}">
+                                                        <img class="icon"
+                                                             src="{{ asset("../resources/img/editer.png") }}"
+                                                             alt="Éditer la colonne"></button>
+                                        {% include 'colonne/formulaireMiseAJourColonne.html.twig' %}
+                                        <button class="delete-colonne" data-id-colonne="{{ colonne.idColonne }}"><img
+                                                    class="icon" src="{{ asset("../resources/img/x.png") }}"
+                                                    alt="Supprimer la colonne"></button>
+                                    </span>
+                                {% endif %}
+                            </div>
+                            <div class="corps" data-tableau="{{ tableau.idTableau }}">
+                                {% for carte in cartesMatrix[ loop.index0 ] %}
+                                    <script type="module">
+                                        import {creerCarteReactive} from '{{ asset("../resources/js/api/carte.js") }}'
+
+                                        creerCarteReactive({{ carte.idCarte }}, '{{ carte.titreCarte }}', '{{ carte.couleurCarte }}', '{{ carte.descriptifCarte }}', '{{ carte.getAffectationsCarteHTML() }}')
+                                    </script>
+                                    <div class="carte"
+                                         id="carte-{{ carte.idCarte }}"
+                                            {% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                                                data-draggable="true"
+                                            {% else %}
+                                                data-draggable="false"
+                                            {% endif %}
+                                         data-stylefun="carte-{{ carte.idCarte }}.getStyle()">
+                                        <div class="titre icons_menu">
+                                            <span data-textvar="carte-{{ carte.idCarte }}.titre"></span>
+                                            {% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                                                <span class="actions">
+                                                    <button class="buttonPopupModifCarte"
+                                                            data-idCarte="{{ carte.idCarte }}">
+                                                        <img class="icon"
+                                                             src="{{ asset("../resources/img/editer.png") }}"
+                                                             alt="Éditer la carte"></button>
+                                                    {% include 'carte/formulaireMiseAJourCarte.html.twig' %}
+                                                    <button class="delete-carte"
+                                                            data-id-carte="{{ carte.idCarte }}"><img
+                                                                class="icon"
+                                                                src="{{ asset("../resources/img/x.png") }}"
+                                                                alt="Supprimer la carte"></button>
+                                                </span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="corps" data-textvar="carte-{{ carte.idCarte }}.description"></div>
+                                        <div class="pied" data-htmlvar="carte-{{ carte.idCarte }}.affectations"></div>
+                                    </div>
+                                {% endfor %}
+                                {% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                                    <button class="ajout-tableau buttonPopupAjoutCarte"
+                                            data-idColonne="{{ colonne.idColonne }}">
+                                        <span class="titre icons_menu btn-ajout">Ajouter une carte</span>
+                                    </button>
+                                    {% include 'carte/formulaireCreationCarte.html.twig' %}
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}{% if estConnecte and tableau.estParticipantOuProprietaire(loginUtilisateurConnecte) %}
+                        <button class="ajout-tableau buttonPopupAjoutColonne" data-idTableau="{{ tableau.idTableau }}">
+                            <span class="titre icons_menu btn-ajout">Ajouter une colonne</span>
+                        </button>
+                        {% include 'colonne/formulaireCreationColonne.html.twig' %}
+                    {% endif %}
+                </div>
+            </div>
+        </article>
+        <script type="module">
+            import {startReactiveDom} from '{{ asset("../resources/js/lib/reactive.js") }}'
+
+            startReactiveDom()
+        </script>
+    </div>
+{% endblock %}
+

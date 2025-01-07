@@ -1,0 +1,31 @@
+{% extends "generale.html.twig" %}
+
+{% block page_title %}Liste des tableaux de /placeholder/{% endblock %}
+
+{% block page_content %}
+    <div>
+        <h3>Mes tableaux ({{ tableaux|length }})</h3>
+        <div class="tableaux">
+            {% for tableau in tableaux %}
+                <div class="ligne_tableau">
+                    <div>{{ tableau.titreTableau }}</div>
+                    <div>
+                        <a href="{{ route('afficherTableau', {'codeTableau': tableau.codeTableau}) }}">Modifier</a>
+                    </div>
+                    <div>
+                        {% if tableau.proprietaire.login == loginUtilisateurConnecte %}
+                            <a href="{{ route('supprimerTableau', {'codeTableau': tableau.codeTableau}) }}">Supprimer
+                                le tableau</a>
+                        {% else %}
+                            <a href="{{ route('quitterTableau', {'codeTableau': tableau.codeTableau}) }}">Quitter
+                                le tableau</a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div>
+            <a href='{{ route("afficherFormulaireCreationTableau") }}'>Ajouter un tableau</a>
+        </div>
+    </div>
+{% endblock %}

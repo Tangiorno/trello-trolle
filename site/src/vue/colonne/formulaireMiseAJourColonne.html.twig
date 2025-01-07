@@ -1,0 +1,16 @@
+<div class="popup">
+    <form>
+        <fieldset>
+            <h3>Modification d'une colonne :</h3>
+            <p>
+                <label for="majColonne_titreColonne">Nom de la colonne&#42;</label> :
+                <input type="text" placeholder="KO" name="titreColonne" id="majColonne_titreColonne" minlength="1" maxlength="50"
+                       value='{{ colonne.titreColonne }}' required>
+            </p>
+            <input type='hidden' id='majColonne_idColonne' value='{{ colonne.idColonne }}'>
+            <p>
+                <input type="button" id="majColonne_submitButton" value="Mettre à jour la colonne">
+            </p>
+        </fieldset>
+    </form>
+</div>

@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  database:
+    image: mysql:8.0
+    environment:
+      - MYSQL_DATABASE=izoretr
+      - MYSQL_USER=izoretr
+      - MYSQL_PASSWORD=
+      - MYSQL_ROOT_PASSWORD=
+      - MYSQL_ALLOW_EMPTY_PASSWORD="yes"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    ports:
+      - "3308:80"
+
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - DB_HOST=webinfo.iutmontp.univ-montp2.fr
+      - DB_NAME=izoretr
+      - DB_USER=izoretr
+      - DB_PASSWORD=
+      - DB_PORT=3308
+    ports:
+      - "2048:80"
+    depends_on:
+      - database
+
+volumes:
+  mysql-data:

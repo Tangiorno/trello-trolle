@@ -1,0 +1,16 @@
+<div class="popup">
+    <form>
+        <fieldset>
+            <h3>Création d'une colonne :</h3>
+            <p>
+                <label for="nomColonne">Nom de la colonne&#42;</label> :
+                <input type="text" placeholder="KO" name="nomColonne" id="add_nomColonne" minlength="1" maxlength="50"
+                       required>
+            </p>
+            <input type='hidden' id='add_idTableau' value='{{ tableau.idTableau }}'>
+            <p>
+                <input type="button" id="add_submitButton" value="Créer la colonne">
+            </p>
+        </fieldset>
+    </form>
+</div>
